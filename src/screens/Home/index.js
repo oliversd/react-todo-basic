@@ -12,6 +12,14 @@ class Home extends Component {
     }
   }
 
+  componentDidMount() {
+    const tareas = localStorage.getItem('OLIVER-tareas');
+
+    if (tareas) {
+      this.setState({tareas: JSON.parse(tareas)});
+    }
+  }
+
   onSubmit = (e) => {
     e.preventDefault();
 
@@ -28,6 +36,7 @@ class Home extends Component {
     tareas.push(task);
 
     this.setState({tareas});
+    localStorage.setItem("OLIVER-tareas", JSON.stringify(tareas));
 
     e.target.reset();
   }
@@ -37,6 +46,15 @@ class Home extends Component {
     const {tareas} = this.state;
     const tasks = tareas.filter(tarea => tarea.id !== id);
     this.setState({tareas: tasks});
+  }
+
+  handleFinish = (e, id) => {
+    e.preventDefault();
+    const { tareas } = this.state;
+    tareas[id].done = !tareas[id].done;
+
+    this.setState({tareas});
+    localStorage.setItem("OLIVER-tareas", JSON.stringify(tareas));
   }
 
   render() {
@@ -59,10 +77,12 @@ class Home extends Component {
         </form>
         {this.state.tareas.map((tarea,id) => (
           <div key={id} className="task">
-            <h3>{tarea.title}</h3>
+            <h3 className={tarea.done ? 'finish' : 'oncourse'}>{tarea.title}</h3>
             <p className="date">{new Date(tarea.createdAt).toLocaleDateString('es-ES', options)}</p>
             <p>{tarea.description}</p>
             <button onClick={(e) => this.handleDelete(e, tarea.id)}>Borrar</button>
+
+            <button onClick={(e) => this.handleFinish(e, id)}>Finalizar</button>
           </div>
         ))}
         {!this.state.tareas.length && <h2>No hay tareas creadas</h2>}
