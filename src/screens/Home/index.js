@@ -10,9 +10,9 @@ class Home extends Component {
   };
 
   componentDidMount() {
-    const tareas = localStorage.getItem("tareas");
+    const tareas = localStorage.getItem("EF2019LAB-tareas");
     if (tareas) {
-      this.setState({tareas:JSON.parse(tareas)});
+      this.setState({ tareas: JSON.parse(tareas) });
     }
   }
 
@@ -21,8 +21,8 @@ class Home extends Component {
     const { tareas } = this.state;
     tareas[id].done = !tareas[id].done;
     tareas[id].finishedAt = new Date();
-    this.setState({tareas});
-    localStorage.setItem("tareas", JSON.stringify(tareas));
+    this.setState({ tareas });
+    localStorage.setItem("EF2019LAB-tareas", JSON.stringify(tareas));
   }
 
   handleSubmit = (e) => {
@@ -41,9 +41,9 @@ class Home extends Component {
 
     tareas.push(task);
 
-    this.setState({tareas});
+    this.setState({ tareas });
     e.target.reset();
-    localStorage.setItem("tareas", JSON.stringify(tareas));
+    localStorage.setItem("EF2019LAB-tareas", JSON.stringify(tareas));
   }
 
   render() {
@@ -54,9 +54,9 @@ class Home extends Component {
         <h1>Mi Lista</h1>
         <form onSubmit={this.handleSubmit}>
           <p>
-          <label htmlFor="title">Título<br />
-            <input type="text" id="title" name="title"/>
-          </label>
+            <label htmlFor="title">Título<br />
+              <input type="text" id="title" name="title" />
+            </label>
           </p>
           <p>
             <textarea name="description" id="description" cols="100" rows="10" />
@@ -65,13 +65,13 @@ class Home extends Component {
             <button type="submit">Crear</button>
           </p>
         </form>
-        {tareas.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt)).map((tarea, index) => (
+        {tareas.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map((tarea, index) => (
           <Task key={tarea.id} tarea={tarea} index={index} handleDone={this.handleDone} />
         ))}
         {!tareas.length && <h2>Crea tu primera tarea</h2>}
       </div>
     );
-}
+  }
 }
 
 export default Home;
