@@ -11,19 +11,19 @@ class Single extends Component {
   }
 
   componentDidMount() {
-    const tareas = localStorage.getItem("tareas");
-    this.setState({tareas: JSON.parse(tareas)});
+    const tareas = localStorage.getItem("EF2019LAB-tareas");
+    this.setState({ tareas: JSON.parse(tareas) });
   }
 
   static getDerivedStateFromProps(props, state) {
     let { tareas, tarea, index } = state;
-    const {match} = props;
+    const { match } = props;
 
     if (tareas.length && match && match.params.taskId && !tarea) {
       tarea = tareas.filter(t => t.id === match.params.taskId)[0];
       index = tareas.findIndex(x => x.id === match.params.taskId);
     }
-    return({tarea, tareas, index});
+    return ({ tarea, tareas, index });
   }
 
 
@@ -32,7 +32,7 @@ class Single extends Component {
     const { tareas } = this.state;
     tareas[id].done = !tareas[id].done;
     tareas[id].finishedAt = new Date();
-    this.setState({tareas});
+    this.setState({ tareas });
     localStorage.setItem("tareas", JSON.stringify(tareas));
   }
 
@@ -40,11 +40,11 @@ class Single extends Component {
     const { tarea, index } = this.state;
     return (
       <div>
-      <Link to="/">Ir al Home</Link>
-      {tarea &&
-        <Task tarea={tarea} index={index} handleDone={this.handleDone} />
-      }
-      {!tarea && <h1>No existe esta tarea</h1>}
+        <Link to="/">Ir al Home</Link>
+        {tarea &&
+          <Task tarea={tarea} index={index} handleDone={this.handleDone} />
+        }
+        {!tarea && <h1>No existe esta tarea</h1>}
       </div>
     );
   }
